@@ -25,7 +25,7 @@ class Dispenser extends Model
         return $this->belongsTo(\App\Models\Company::class);
     }
 
-    public function dispenserHistorico() {
+    public function dispenserHistoric() {
         return $this->hasMany(\App\Models\DispenserHistoric::class);
     }
 }

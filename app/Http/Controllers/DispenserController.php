@@ -16,7 +16,35 @@ class DispenserController extends Controller
 	 */
 	public function index()
 	{
-		dd(\App\Models\Dispenser::with('dispenserHistoric')->get());
+		$dispensers = \App\Models\Dispenser::with('dispenserHistoric')->get();
+
+		if ($dispensers) {
+			print_r('<pre>');
+
+			foreach ($dispensers as $indexDispenser => $dispenser) {
+				print_r("\n------------------------\n");
+				print_r('Dispenser: ' . ($indexDispenser + 1) . "\n");
+				print_r('# ' . $dispenser->capacity . "\n");
+				print_r('# ' . $dispenser->current_capacity . "\n");
+				print_r('# ' . $dispenser->lat . "\n");
+				print_r('# ' . $dispenser->lng . "\n");
+				print_r('# ' . $dispenser->company_id . "\n");
+				print_r('# ' . $dispenser->created_at . "\n");
+				print_r('# ' . $dispenser->updated_at . "\n");
+
+				if ($dispenser->dispenserHistoric) {
+					foreach ($dispenser->dispenserHistoric as $indexHistoric => $historic) {
+						print_r('## Historico: ' . ($indexHistoric + 1) . "\n");
+						print_r('## ' . $historic->dispenser_id . "\n");
+						print_r('## ' . $historic->entries . "\n");
+						print_r('## ' . $historic->uses . "\n");
+						print_r('## ' . $historic->type . "\n");
+						print_r('## ' . $historic->created_at . "\n");
+					}
+				}
+			}
+			print_r('</pre>');
+		}
 	}
 
 	/**

@@ -34,7 +34,7 @@ class DispenserController extends Controller
 
 				if ($dispenser->dispenserHistoric) {
 					foreach ($dispenser->dispenserHistoric as $indexHistoric => $historic) {
-						print_r('## Historico: ' . ($indexHistoric + 1) . "\n");
+						print_r("\n## Historico: " . ($indexHistoric + 1) . "\n");
 						print_r('## Entradas: ' . $historic->entries . "\n");
 						print_r('## Usos: ' . $historic->uses . "\n");
 						print_r('## Tipo: ' . ($historic->type == 1 ? 'consumo' : 'reabastecer') . "\n");

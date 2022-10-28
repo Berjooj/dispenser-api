@@ -16,33 +16,35 @@ class DispenserController extends Controller
 	 */
 	public function index()
 	{
-		$dispensers = \App\Models\Dispenser::with('dispenserHistoric')->get();
+		$dispensers = \App\Models\Dispenser::with('dispenserHistoric', 'company')->get();
 
 		if ($dispensers) {
 			print_r('<pre>');
 
 			foreach ($dispensers as $indexDispenser => $dispenser) {
 				print_r("\n------------------------\n");
-				print_r('Dispenser: ' . ($indexDispenser + 1) . "\n");
-				print_r('# ' . $dispenser->capacity . "\n");
-				print_r('# ' . $dispenser->current_capacity . "\n");
-				print_r('# ' . $dispenser->lat . "\n");
-				print_r('# ' . $dispenser->lng . "\n");
-				print_r('# ' . $dispenser->company_id . "\n");
-				print_r('# ' . $dispenser->created_at . "\n");
-				print_r('# ' . $dispenser->updated_at . "\n");
+				print_r('# Dispenser: ' . $dispenser->token . "\n");
+				print_r('# Capacidade: ' . $dispenser->capacity . "\n");
+				print_r('# Capacidade atual: ' . $dispenser->current_capacity . "\n");
+				print_r('# Latitude: ' . $dispenser->lat . "\n");
+				print_r('# Longitude: ' . $dispenser->lng . "\n");
+				print_r('# Empresa: ' . $dispenser->company->company_name . "\n");
+				print_r('# Dt criação: ' . $dispenser->created_at . "\n");
+				print_r('# Dt ult. edição: ' . $dispenser->updated_at . "\n");
 
 				if ($dispenser->dispenserHistoric) {
 					foreach ($dispenser->dispenserHistoric as $indexHistoric => $historic) {
 						print_r('## Historico: ' . ($indexHistoric + 1) . "\n");
-						print_r('## ' . $historic->dispenser_id . "\n");
-						print_r('## ' . $historic->entries . "\n");
-						print_r('## ' . $historic->uses . "\n");
-						print_r('## ' . $historic->type . "\n");
-						print_r('## ' . $historic->created_at . "\n");
+						print_r('## Entradas: ' . $historic->entries . "\n");
+						print_r('## Usos: ' . $historic->uses . "\n");
+						print_r('## Tipo: ' . ($historic->type == 1 ? 'consumo' : 'reabastecer') . "\n");
+						print_r('## Dt criação: ' . $historic->created_at . "\n");
 					}
 				}
+
+				print_r("\n");
 			}
+
 			print_r('</pre>');
 		}
 	}
@@ -78,7 +80,9 @@ class DispenserController extends Controller
 		if (!$dispenser)
 			return response()->json(['mensagem' => 'Dispenser não encontrado'], 404);
 
-		$currentCapacity = ($dispenser->current_capacity - ($validated['uses'] * 5));
+		$currentCapacity = $validated['type'] == 1
+			? ($dispenser->current_capacity - ($validated['uses'] * 5))
+			: $dispenser->capacity;
 
 		$dispenser->update(['current_capacity' => $currentCapacity]);
 

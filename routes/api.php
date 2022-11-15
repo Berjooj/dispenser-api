@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/dispenser', [\App\Http\Controllers\DispenserController::class, 'store']);
-Route::get('/dispenser', [\App\Http\Controllers\DispenserController::class, 'index']);
+Route::get('/companies', [\App\Http\Controllers\CompanyController::class, 'index']);

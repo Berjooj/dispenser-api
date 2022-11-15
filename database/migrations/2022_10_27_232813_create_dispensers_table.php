@@ -24,7 +24,7 @@ return new class extends Migration
 			$table->decimal('lat', 11, 8)->nullable();
 			$table->decimal('lng', 11, 8)->nullable();
 
-			$table->foreignId('company_id')->references('id')->on('companies');
+			$table->foreignId('company_id')->references('id')->on('companies')->onDelete('cascade');
 
 			$table->timestamps();
 		});

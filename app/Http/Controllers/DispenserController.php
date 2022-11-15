@@ -10,42 +10,19 @@ use Illuminate\Support\Facades\Validator;
 class DispenserController extends Controller
 {
 	/**
-	 * Display a listing of the resource.
+	 * Display the specified resource.
 	 *
+	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function show($id)
 	{
-		$dispensers = \App\Models\Dispenser::with('dispenserHistoric', 'company')->get();
+		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
+			->where('dispenser.company_id', $id)
+			->orderBy('created_at', 'desc')
+			->get('dispenser_hitorics.*');
 
-		if ($dispensers) {
-			print_r('<pre>');
-
-			foreach ($dispensers as $indexDispenser => $dispenser) {
-				print_r("\n------------------------\n");
-				print_r('# Dispenser: ' . $dispenser->token . "\n");
-				print_r('# Capacidade: ' . $dispenser->capacity . "\n");
-				print_r('# Capacidade atual: ' . $dispenser->current_capacity . "\n");
-				print_r('# Latitude: ' . $dispenser->lat . "\n");
-				print_r('# Longitude: ' . $dispenser->lng . "\n");
-				print_r('# Empresa: ' . $dispenser->company->company_name . "\n");
-				print_r('# Dt criação: ' . $dispenser->created_at . "\n");
-				print_r('# Dt ult. edição: ' . $dispenser->updated_at . "\n");
-
-				if ($dispenser->dispenserHistoric) {
-					foreach ($dispenser->dispenserHistoric as $indexHistoric => $historic) {
-						print_r("\n## Historico: " . ($indexHistoric + 1) . "\n");
-						print_r('## Entradas: ' . $historic->entries . "\n");
-						print_r('## Usos: ' . $historic->uses . "\n");
-						print_r('## Tipo: ' . ($historic->type == 1 ? 'consumo' : 'reabastecer') . "\n");
-						print_r('## Dt criação: ' . $historic->created_at . "\n");
-					}
-				}
-
-				print_r("\n");
-			}
-
-			print_r('</pre>');
+		foreach ($historicList as $historic) {
 		}
 	}
 
@@ -95,7 +72,8 @@ class DispenserController extends Controller
 				'dispenser_id' => $dispenser->id,
 				'entries' => $validated['entries'],
 				'uses' => $validated['uses'],
-				'type' => $validated['type']
+				'type' => $validated['type'],
+				'percentage' => (($currentCapacity * 100) / $dispenser->capacity)
 			]
 		);
 

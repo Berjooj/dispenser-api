@@ -15,6 +15,7 @@ class DispenserHistoric extends Model
         'entries',
         'uses',
         'type',
+        'percentage',
         'created_at',
         'updated_at'
     ];

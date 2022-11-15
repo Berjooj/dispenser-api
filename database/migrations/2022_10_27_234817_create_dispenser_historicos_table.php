@@ -16,7 +16,7 @@ return new class extends Migration
 		Schema::create('dispenser_historics', function (Blueprint $table) {
 			$table->id();
 
-			$table->foreignId('dispenser_id')->references('id')->on('dispensers');
+			$table->foreignId('dispenser_id')->references('id')->on('dispensers')->onDelete('cascade');
 
 			$table->integer('entries');
 			$table->integer('uses');

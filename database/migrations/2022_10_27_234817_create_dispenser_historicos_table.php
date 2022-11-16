@@ -18,9 +18,13 @@ return new class extends Migration
 
 			$table->foreignId('dispenser_id')->references('id')->on('dispensers')->onDelete('cascade');
 
-			$table->integer('entries');
-			$table->integer('uses');
+			$table->integer('uses')->nullable()->default(0);
+			$table->integer('entries')->nullable()->default(0);
+
+			// 1 - Uso, 2 - Reabastecer, 3 - Log do sensor de entrada
 			$table->integer('type');
+
+			$table->decimal('percentage', 11, 8)->default(0);
 
 			$table->timestamps();
 		});

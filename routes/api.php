@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/dispenser', [\App\Http\Controllers\DispenserController::class, 'store']);
+Route::get('/dispenser/{companyId}', [\App\Http\Controllers\DispenserController::class, 'index']);
+
+Route::post('/flow', [\App\Http\Controllers\FlowController::class, 'store']);
+
 Route::get('/companies', [\App\Http\Controllers\CompanyController::class, 'index']);

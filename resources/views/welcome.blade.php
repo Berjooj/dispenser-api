@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="connect-src * 'unsafe-inline'; font-src 'self' data:;">
 
-    <title>Dispenser v0.1</title>
+    <title>Dispenser v0.2</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
@@ -18,6 +18,7 @@
     <script src="{{ asset('res/js/Chart.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/feather.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/index.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">
 
@@ -114,8 +115,8 @@
                                 <thead>
                                     <tr>
                                         <th>Dispenser</th>
-                                        <th>Capacidade</th>
-                                        <th>Utilização</th>
+                                        <th>Capacidade (%)</th>
+                                        <th>Utilizações</th>
                                         <th>Data Registro</th>
                                     </tr>
                                 </thead>

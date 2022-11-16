@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Dispenser;
+use App\Models\DispenserHistoric;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
@@ -16,6 +19,6 @@ class CompanyController extends Controller
     {
         $companies = Company::get();
 
-        return response()->json($companies->map->only(['id', 'company_name' ,'company_document']), 200);
+        return response()->json($companies->map->only(['id', 'company_name', 'company_document']), 200);
     }
 }

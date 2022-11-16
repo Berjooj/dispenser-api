@@ -27,6 +27,21 @@ class DispenserController extends Controller
 	}
 
 	/**
+	 * Display the specified resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index($companyId)
+	{
+		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
+			->where('dispensers.company_id', $companyId)
+			->orderBy('dispenser_historics.created_at', 'desc')
+			->get('dispenser_historics.*');
+
+		return response()->json($historicList);
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
@@ -37,7 +52,6 @@ class DispenserController extends Controller
 		$validator = Validator::make(\request()->all(), [
 			'token' => 'required|uuid',
 			'uses' => 'required|integer',
-			'entries' => 'required|integer',
 			'type' => 'required|integer'
 		]);
 
@@ -45,7 +59,7 @@ class DispenserController extends Controller
 			return response()->json(['mensagem' => 'Requisição inválida'], 422);
 
 		$validated = $validator->safe()->only(
-			['token', 'uses', 'entries', 'type']
+			['token', 'uses', 'type']
 		);
 
 		if (!in_array($validated['type'], [1, 2]))
@@ -70,7 +84,6 @@ class DispenserController extends Controller
 		$dispenserHistoric = new DispenserHistoric(
 			[
 				'dispenser_id' => $dispenser->id,
-				'entries' => $validated['entries'],
 				'uses' => $validated['uses'],
 				'type' => $validated['type'],
 				'percentage' => (($currentCapacity * 100) / $dispenser->capacity)

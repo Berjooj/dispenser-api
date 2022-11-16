@@ -1,5 +1,8 @@
 /node_modules
-/public
+/public/.htaccess
+/public/favicon.ico
+/public/index.php
+/public/robots.txt
 /public/build
 /public/hot
 /public/storage

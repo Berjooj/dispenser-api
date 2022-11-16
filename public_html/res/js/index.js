@@ -38,7 +38,7 @@ $(document).ready(function ()
 
             $('#dropdown-company').removeClass('show')
 
-            refreshGraph(undefined, )
+            reloadGraph($(this).data('companyId'))
         })
 
     }).fail(function (e)
@@ -106,5 +106,49 @@ function refreshGraph(chart, displayType, infoData)
         });
 
         chart.update();
+    } catch (e) { }
+}
+
+function reloadGraph(companyId)
+{
+
+    try
+    {
+        $.get('api/dispenser/' + companyId, function (data)
+        {
+            $('#table-uses').empty()
+            $('#table-flow').empty()
+
+            if (data != [] && data != undefined)
+            {
+                data.forEach(element =>
+                {
+                    switch (element.type)
+                    {
+                        case 1:
+                        case 2:
+                            $('#table-uses').append(
+                                '<tr>'
+                                + '<td> Dispenser #' + element.dispenser_id + '</td>'
+                                + '<td>' + parseFloat(element.percentage).toFixed(2) + '%</td>'
+                                + '<td>' + element.uses + '</td>'
+                                + '<td>' + moment(Date.parse(element.created_at)).format('DD/MM/YYYY HH:mm:ss') + '</td>'
+                                + '</tr>'
+                            )
+                            break;
+
+                        case 3:
+                            $('#table-flow').append(
+                                '<tr>'
+                                + '<td> Dispenser #' + element.dispenser_id + '</td>'
+                                + '<td>' + element.entries + '</td>'
+                                + '<td>' + moment(Date.parse(element.created_at)).format('DD/MM/YYYY HH:mm:ss') + '</td>'
+                                + '</tr>'
+                            )
+                            break;
+                    }
+                });
+            }
+        })
     } catch (e) { }
 }

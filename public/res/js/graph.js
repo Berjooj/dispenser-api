@@ -2,7 +2,10 @@ var chart;
 
 function chartInit()
 {
-    var companyId = null;
+    var companyId = $('#companyLabel').data('company-id');
+
+    if (companyId)
+        reloadGraph(companyId, 'bar')
 
     // seta o evento de trocar de empresa
     $('#dropdown-company a').on('click', function ()

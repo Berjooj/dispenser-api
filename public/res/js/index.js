@@ -1,7 +1,6 @@
 $(document).ready(function ()
 {
-    var infoChart = []
-    var chart = undefined
+    var companyId = null;
 
     $.get('api/companies', function (data)
     {
@@ -38,7 +37,12 @@ $(document).ready(function ()
 
             $('#dropdown-company').removeClass('show')
 
-            reloadGraph($(this).data('companyId'))
+            $('#chartTypeButton').empty()
+            $('#bar-i').clone().appendTo('#chartTypeButton')
+            $('#bar-span').clone().appendTo('#chartTypeButton')
+
+            companyId = $(this).data('companyId')
+            reloadGraph(companyId, 'bar')
         })
 
     }).fail(function (e)
@@ -68,87 +72,12 @@ $(document).ready(function ()
         $(this).find('i').clone().appendTo('#chartTypeButton')
         $(this).find('span').clone().appendTo('#chartTypeButton')
 
+        $('#chartTypeButton').attr('data-charttype', $(this).data('charttype'))
+
         $('#dropdown-chart-type').removeClass('show')
 
-        refreshGraph(chart, $(this).data('charttype'))
+        reloadGraph(companyId, $(this).data('charttype'))
     })
 
     feather.replace()
 })
-
-function refreshGraph(chart, displayType, infoData)
-{
-
-    try
-    {
-        if (chart != undefined && chart != null && chart != '')
-            chart.destroy()
-
-        var ctx = $('#chart')
-
-        chart = new Chart(ctx, {
-            type: displayType,
-            data: {
-                infoData
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                legend: {
-                    display: true,
-                }
-            }
-        });
-
-        chart.update();
-    } catch (e) { }
-}
-
-function reloadGraph(companyId)
-{
-
-    try
-    {
-        $.get('api/dispenser/' + companyId, function (data)
-        {
-            $('#table-uses').empty()
-            $('#table-flow').empty()
-
-            if (data != [] && data != undefined)
-            {
-                data.forEach(element =>
-                {
-                    switch (element.type)
-                    {
-                        case 1:
-                        case 2:
-                            $('#table-uses').append(
-                                '<tr>'
-                                + '<td> Dispenser #' + element.dispenser_id + '</td>'
-                                + '<td>' + parseFloat(element.percentage).toFixed(2) + '%</td>'
-                                + '<td>' + element.uses + '</td>'
-                                + '<td>' + moment(Date.parse(element.created_at)).format('DD/MM/YYYY HH:mm:ss') + '</td>'
-                                + '</tr>'
-                            )
-                            break;
-
-                        case 3:
-                            $('#table-flow').append(
-                                '<tr>'
-                                + '<td> Dispenser #' + element.dispenser_id + '</td>'
-                                + '<td>' + element.entries + '</td>'
-                                + '<td>' + moment(Date.parse(element.created_at)).format('DD/MM/YYYY HH:mm:ss') + '</td>'
-                                + '</tr>'
-                            )
-                            break;
-                    }
-                });
-            }
-        })
-    } catch (e) { }
-}

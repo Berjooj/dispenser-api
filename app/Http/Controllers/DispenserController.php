@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Dispenser;
 use App\Models\DispenserHistoric;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use stdClass;
 
 class DispenserController extends Controller
 {
@@ -33,12 +35,47 @@ class DispenserController extends Controller
 	 */
 	public function index($companyId)
 	{
-		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
+		$dispensers = Dispenser::with('dispenserHistoric')
 			->where('dispensers.company_id', $companyId)
-			->orderBy('dispenser_historics.created_at', 'desc')
-			->get('dispenser_historics.*');
+			->orderBy('id')
+			->get();
 
-		return response()->json($historicList);
+		$dataSets = [];
+		$labels = [];
+		$historicList = [];
+
+		foreach ($dispensers as $key => $dispenser) {
+			$dispenserHistoric = [];
+
+			foreach ($dispenser->dispenserHistoric as $historic) {
+				if ($historic->type === 3)
+					continue;
+
+				$labels[] = Carbon::parse($historic->created_at)->subHour(3)->format('H:i:s d/M/Y');
+				$dispenserHistoric[] = $historic->uses;
+				$historicList[] = $historic;
+			}
+
+			$color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+
+			$dataSet = new stdClass();
+			$dataSet->data = $dispenserHistoric;
+			$dataSet->label = 'Dispenser #' . $dispenser->id;
+			$dataSet->lineTension = 0;
+			$dataSet->backgroundColor = 'transparent';
+			$dataSet->borderColor = $color;
+			$dataSet->borderWidth = 4;
+			$dataSet->pointBackgroundColor = $color;
+
+			$dataSets[] = $dataSet;
+		}
+
+		$series = [
+			'labels' => array_unique($labels),
+			'datasets' => $dataSets
+		];
+
+		return response()->json(['table' => $historicList, 'series' => $series]);
 	}
 
 	/**

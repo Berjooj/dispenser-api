@@ -18,6 +18,7 @@
     <script src="{{ asset('res/js/Chart.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/feather.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/index.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('res/js/graph.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">
@@ -84,13 +85,13 @@
                     <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
-                            <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="chartTypeButton">
+                            <button type="button" data-chartType="bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="chartTypeButton">
                                 Selecionar
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" id="dropdown-chart-type">
                                 <a class="dropdown-item" href="#" data-chartType="bar" type="button">
-                                    <i class="fa-solid fa-chart-simple feather feather-calendar"></i>
-                                    <span> Barra</span>
+                                    <i class="fa-solid fa-chart-simple feather feather-calendar" id="bar-i"></i>
+                                    <span id="bar-span"> Barra</span>
                                 </a>
                                 <a class="dropdown-item" href="#" data-chartType="line" type="button">
                                     <i class="fa-solid fa-chart-line feather feather-calendar"></i>

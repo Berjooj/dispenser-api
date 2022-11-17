@@ -4,9 +4,6 @@ function chartInit()
 {
     var companyId = $('#companyLabel').data('company-id');
 
-    if (companyId)
-        reloadGraph(companyId, 'bar')
-
     // seta o evento de trocar de empresa
     $('#dropdown-company a').on('click', function ()
     {
@@ -17,6 +14,9 @@ function chartInit()
         companyId = $(this).data('companyId')
         reloadGraph(companyId, 'bar')
     })
+
+    if (companyId)
+        reloadGraph(companyId, 'bar')
 
     // desabilita os eventos dos links <a>
     $(document).on('click', '*[href]', function (e)

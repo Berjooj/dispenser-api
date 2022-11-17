@@ -19,6 +19,8 @@
     <script src="{{ asset('res/js/feather.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/index.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/graph.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('res/js/map.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('res/js/dispenser.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">

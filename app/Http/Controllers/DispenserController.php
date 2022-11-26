@@ -21,7 +21,7 @@ class DispenserController extends Controller
 	{
 		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
 			->where('dispenser.company_id', $id)
-			->orderBy('created_at', 'desc')
+			->orderBy('created_at', 'asc')
 			->get('dispenser_hitorics.*');
 
 		foreach ($historicList as $historic) {
@@ -48,12 +48,13 @@ class DispenserController extends Controller
 			$dispenserHistoric = [];
 
 			foreach ($dispenser->dispenserHistoric as $historic) {
+				$historicList[] = $historic;
+				
 				if ($historic->type === 3)
 					continue;
 
 				$labels[] = Carbon::parse($historic->created_at)->subHour(3)->format('H:i:s d/M/Y');
-				$dispenserHistoric[] = $historic->uses;
-				$historicList[] = $historic;
+				$dispenserHistoric[count($labels)] = $historic->uses;
 			}
 
 			$color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
@@ -62,7 +63,7 @@ class DispenserController extends Controller
 			$dataSet->data = $dispenserHistoric;
 			$dataSet->label = 'Dispenser #' . $dispenser->id;
 			$dataSet->lineTension = 0;
-			$dataSet->backgroundColor = 'transparent';
+			$dataSet->backgroundColor = $color . '4D';
 			$dataSet->borderColor = $color;
 			$dataSet->borderWidth = 4;
 			$dataSet->pointBackgroundColor = $color;
@@ -70,10 +71,30 @@ class DispenserController extends Controller
 			$dataSets[] = $dataSet;
 		}
 
+		$tempDataSet = array_fill(0, count($labels), 0);
+
+		foreach ($dataSets as &$dataSet) {
+			array_map(
+				function ($key) use ($dataSet) {
+				    if (!array_key_exists($key, $dataSet->data))
+					    $dataSet->data[$key] = 0;
+			    },
+				array_keys($tempDataSet)
+			);
+
+			ksort($dataSet->data);
+			$dataSet->data = array_values($dataSet->data);
+		}
+
+
 		$series = [
 			'labels' => array_unique($labels),
 			'datasets' => $dataSets
 		];
+
+		usort($historicList, function ($cur, $prev) {
+			return strtotime($cur['created_at']) - strtotime($prev['created_at']);
+		});
 
 		return response()->json(['table' => $historicList, 'series' => $series]);
 	}

@@ -24,7 +24,7 @@ return new class extends Migration
 			// 1 - Uso, 2 - Reabastecer, 3 - Log do sensor de entrada
 			$table->integer('type');
 
-			$table->decimal('percentage', 11, 8)->default(0);
+			$table->decimal('percentage')->default(0);
 
 			$table->timestamps();
 		});

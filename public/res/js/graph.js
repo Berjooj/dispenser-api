@@ -1,12 +1,10 @@
 var chart;
 
-function chartInit()
-{
+function chartInit() {
     var companyId = $('#companyLabel').data('company-id');
 
     // seta o evento de trocar de empresa
-    $('#dropdown-company a').on('click', function ()
-    {
+    $('#dropdown-company a').on('click', function () {
         $('#chartTypeButton').empty()
         $('#bar-i').clone().appendTo('#chartTypeButton')
         $('#bar-span').clone().appendTo('#chartTypeButton')
@@ -19,8 +17,7 @@ function chartInit()
         reloadGraph(companyId, 'bar')
 
     // desabilita os eventos dos links <a>
-    $(document).on('click', '*[href]', function (e)
-    {
+    $(document).on('click', '*[href]', function (e) {
         e.preventDefault();
         return false;
     });
@@ -31,8 +28,7 @@ function chartInit()
     $('#dropdown-chart-type a span').first().clone().appendTo('#chartTypeButton')
     $('#dropdown-chart-type a').first().addClass('active')
 
-    $('#dropdown-chart-type a').on('click', function ()
-    {
+    $('#dropdown-chart-type a').on('click', function () {
         $('#dropdown-chart-type a').removeClass('active')
         $(this).addClass('active')
 
@@ -50,11 +46,15 @@ function chartInit()
     feather.replace()
 }
 
-function refreshGraph(displayType, infoData)
-{
+function destroyChart() {
+    $('#dropdown-company a').off()
+    $('#dropdown-chart-type a').off()
+}
 
-    try
-    {
+
+function refreshGraph(displayType, infoData) {
+
+    try {
         if (chart != undefined)
             chart.destroy()
 
@@ -84,24 +84,18 @@ function refreshGraph(displayType, infoData)
     } catch (e) { console.log(e) }
 }
 
-function reloadGraph(companyId, displayType)
-{
+function reloadGraph(companyId, displayType) {
 
-    try
-    {
-        $.get('api/dispenser/' + companyId, function (data)
-        {
+    try {
+        $.get('api/dispenser/' + companyId, function (data) {
             $('#table-uses').empty()
             $('#table-flow').empty()
 
-            if (data != [] && data != undefined)
-            {
+            if (data != [] && data != undefined) {
                 refreshGraph(displayType, data.series)
 
-                data.table.forEach(element =>
-                {
-                    switch (element.type)
-                    {
+                data.table.forEach(element => {
+                    switch (element.type) {
                         case 1:
                         case 2:
                             $('#table-uses').append(

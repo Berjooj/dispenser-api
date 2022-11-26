@@ -38,7 +38,8 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <div class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
             <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle select-brand" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
+                <button class="btn btn-secondary btn-sm dropdown-toggle select-brand" type="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
                     <span>Selecionar</span>
                 </button>
                 <div class="dropdown-menu" id="dropdown-company">
@@ -66,7 +67,8 @@
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-page="dispenser" id="dispenser">
-                                <i class="fa-solid fa-bottle-water feather feather-layers" style="text-align:center"></i>
+                                <i class="fa-solid fa-bottle-water feather feather-layers"
+                                    style="text-align:center"></i>
                                 Dispenser
                             </button>
                         </li>
@@ -83,17 +85,19 @@
     <br><br><br>
 
     <script>
-        $(document).ready(function() {
-            $.get("{{ asset('res/components/chart.html') }}", function(data) {
+        $(document).ready(function () {
+            $.get("{{ asset('res/components/chart.html') }}", function (data) {
                 $('#main').html(data)
                 chartInit()
             });
 
-            $('.nav-link').on('click', function() {
+            $('.nav-link').on('click', function () {
                 $('.nav-link').removeClass('active')
                 $(this).addClass('active')
 
                 $('#main').empty()
+
+                destroyChart()
 
                 switch ($(this).attr('id')) {
                     case 'dispenser':
@@ -101,7 +105,7 @@
                     case 'map':
                         break;
                     case 'chart':
-                        $.get("{{ asset('res/components/chart.html') }}", function(data) {
+                        $.get("{{ asset('res/components/chart.html') }}", function (data) {
                             $('#main').html(data)
                             chartInit()
                         });

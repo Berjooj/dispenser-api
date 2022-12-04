@@ -2,6 +2,8 @@ $(document).ready(function ()
 {
     $.get('api/companies', function (data)
     {
+        $('#loader').addClass('hide-loader');
+
         companyList = data
 
         data.forEach(element =>
@@ -33,6 +35,15 @@ $(document).ready(function ()
 
             $('#dropdown-company').removeClass('show')
         })
+
+        $('#dropdown-company a').first().removeClass('active')
+        $('#dropdown-company a').first().addClass('active')
+
+        $('#companyLabel').empty()
+        $('#companyLabel').append('<span>' + data[0].company_name + '</span>')
+        $('#companyLabel').attr('data-company-id', data[0].id)
+
+        $('#dropdown-company').removeClass('show')
 
     }).fail(function (e)
     {

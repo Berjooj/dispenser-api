@@ -17,10 +17,10 @@ class DispenserController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show($id)
+	public function show($companyId)
 	{
 		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
-			->where('dispenser.company_id', $id)
+			->where('dispenser.company_id', $companyId)
 			->orderBy('created_at', 'asc')
 			->get('dispenser_hitorics.*');
 
@@ -44,20 +44,28 @@ class DispenserController extends Controller
 		$labels = [];
 		$historicList = [];
 
+		$colorList = [
+			'#007bff', '#6610f2', '#e83e8c', '#fd7e14', '#ffc107', '#17a2b8', '#343a40'
+		];
+
 		foreach ($dispensers as $key => $dispenser) {
 			$dispenserHistoric = [];
 
 			foreach ($dispenser->dispenserHistoric as $historic) {
+				$historic->created_at = !empty($historic->created_at)
+					? Carbon::parse($historic->created_at)->subHour(3)->format('H:i d/M/Y')
+					: null;
+
 				$historicList[] = $historic;
-				
+
 				if ($historic->type === 3)
 					continue;
 
-				$labels[] = Carbon::parse($historic->created_at)->subHour(3)->format('H:i:s d/M/Y');
+				$labels[] = $historic->created_at;
 				$dispenserHistoric[count($labels)] = $historic->uses;
 			}
 
-			$color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+			$color = $colorList[$key];
 
 			$dataSet = new stdClass();
 			$dataSet->data = $dispenserHistoric;
@@ -76,9 +84,9 @@ class DispenserController extends Controller
 		foreach ($dataSets as &$dataSet) {
 			array_map(
 				function ($key) use ($dataSet) {
-				    if (!array_key_exists($key, $dataSet->data))
-					    $dataSet->data[$key] = 0;
-			    },
+					if (!array_key_exists($key, $dataSet->data))
+						$dataSet->data[$key] = 0;
+				},
 				array_keys($tempDataSet)
 			);
 
@@ -93,10 +101,23 @@ class DispenserController extends Controller
 		];
 
 		usort($historicList, function ($cur, $prev) {
-			return strtotime($cur['created_at']) - strtotime($prev['created_at']);
+			return strtotime($prev['created_at']) - strtotime($cur['created_at']);
 		});
 
-		return response()->json(['table' => $historicList, 'series' => $series]);
+		$counter = [
+			'dispensers' => count($dispensers),
+			'usage' => count(array_filter($historicList, function ($historic) {
+				return $historic->type === 1;
+			})),
+			'recharges' => count(array_filter($historicList, function ($historic) {
+				return $historic->type === 2;
+			})),
+			'entries' => count(array_filter($historicList, function ($historic) {
+				return $historic->type === 3;
+			}))
+		];
+
+		return response()->json(['table' => $historicList, 'series' => $series, 'counter' => $counter]);
 	}
 
 	/**
@@ -132,6 +153,8 @@ class DispenserController extends Controller
 		$currentCapacity = $validated['type'] == 1
 			? ($dispenser->current_capacity - ($validated['uses'] * 5))
 			: $dispenser->capacity;
+
+		$currentCapacity = $currentCapacity < 0 ? 0 : $currentCapacity;
 
 		$dispenser->update(['current_capacity' => $currentCapacity]);
 

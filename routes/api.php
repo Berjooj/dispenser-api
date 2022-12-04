@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/dispenser', [\App\Http\Controllers\DispenserController::class, 'store']);
 Route::get('/dispenser/{companyId}', [\App\Http\Controllers\DispenserController::class, 'index']);
+Route::get('/dispenser/list/{companyId}', [\App\Http\Controllers\DispenserController::class, 'show']);
 
 Route::post('/flow', [\App\Http\Controllers\FlowController::class, 'store']);
 

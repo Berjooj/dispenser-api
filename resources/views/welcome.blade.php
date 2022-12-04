@@ -7,10 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="connect-src * 'unsafe-inline'; font-src 'self' data:;">
 
-    <title>Dispenser v0.2.7</title>
+    <title>Dispenser v0.3.0</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('res/css/dispenser.css') }}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('res/css/app.css') }}" crossorigin="anonymous">
 
     <script src="{{ asset('res/js/popper.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/jquery-3.6.1.js') }}" crossorigin="anonymous"></script>
@@ -38,8 +40,7 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <div class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
             <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle select-brand" type="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
+                <button class="btn btn-secondary btn-sm dropdown-toggle select-brand" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
                     <span>Selecionar</span>
                 </button>
                 <div class="dropdown-menu" id="dropdown-company">
@@ -67,8 +68,7 @@
                         </li>
                         <li class="nav-item">
                             <button class="nav-link" data-page="dispenser" id="dispenser">
-                                <i class="fa-solid fa-bottle-water feather feather-layers"
-                                    style="text-align:center"></i>
+                                <i class="fa-solid fa-bottle-water feather feather-layers" style="text-align:center"></i>
                                 Dispenser
                             </button>
                         </li>
@@ -79,19 +79,27 @@
             <main role="main" id="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             </main>
         </div>
+
+        <div id="loader" class="hide-loader">
+            <i class="fa-solid fa-spinner rotating"></i>
+        </div>
     </div>
 
     <br><br><br>
     <br><br><br>
 
     <script>
-        $(document).ready(function () {
-            $.get("{{ asset('res/components/chart.html') }}", function (data) {
+        $(document).ready(function() {
+            $.get("{{ asset('res/components/chart.html') }}", function(data) {
                 $('#main').html(data)
                 chartInit()
             });
 
-            $('.nav-link').on('click', function () {
+            // $.get("{{ asset('res/components/dispenser.html') }}", function(data) {
+            //     $('#main').html(data)
+            // });
+
+            $('.nav-link').on('click', function() {
                 $('.nav-link').removeClass('active')
                 $(this).addClass('active')
 
@@ -101,11 +109,15 @@
 
                 switch ($(this).attr('id')) {
                     case 'dispenser':
+                        $.get("{{ asset('res/components/dispenser.html') }}", function(data) {
+                            $('#main').html(data)
+                            chartInit()
+                        });
                         break;
                     case 'map':
                         break;
                     case 'chart':
-                        $.get("{{ asset('res/components/chart.html') }}", function (data) {
+                        $.get("{{ asset('res/components/chart.html') }}", function(data) {
                             $('#main').html(data)
                             chartInit()
                         });

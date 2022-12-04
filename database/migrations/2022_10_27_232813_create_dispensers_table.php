@@ -18,6 +18,8 @@ return new class extends Migration
 
 			$table->uuid('token');
 
+			$table->text('address');
+
 			$table->float('capacity');
 			$table->float('current_capacity');
 

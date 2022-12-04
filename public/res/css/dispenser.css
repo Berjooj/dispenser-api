@@ -1,0 +1,31 @@
+.icon-card {
+    display: flex;
+    padding: .75rem;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    width: 23.5%;
+}
+
+.icon-card-icon {
+    font-size: 50px;
+}
+
+.icon-card-info {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin-left: .75rem;
+}
+
+.timeline-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    border-radius: 5px;
+    padding: 4px;
+    margin-right: 5px;
+}
+
+.update-date {
+    color: rgb(201, 201, 201);
+}

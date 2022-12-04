@@ -14,6 +14,7 @@ class Dispenser extends Model
         'token',
         'capacity',
         'current_capacity',
+        'address',
         'lat',
         'lng',
         'company_id',

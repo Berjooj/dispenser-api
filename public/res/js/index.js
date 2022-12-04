@@ -23,17 +23,6 @@ $(document).ready(function ()
             $('#dropdown-company').append('<div class="dropdown-divider"></div>')
         });
 
-        $('#dropdown-company a').first().removeClass('active')
-        $('#dropdown-company a').first().addClass('active')
-
-        $('#companyLabel').empty()
-        $('#companyLabel').append('<span>' + data[0].company_name + '</span>')
-        $('#companyLabel').attr('data-company-id', data[0].id)
-
-        $('#dropdown-company').removeClass('show')
-
-        reloadGraph(data[0].id, $(this).data('charttype'))
-
         // seta o evento de trocar de empresa
         $('#dropdown-company a').on('click', function ()
         {

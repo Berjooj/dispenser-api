@@ -48,8 +48,6 @@ function chartInit()
     })
 
     feather.replace()
-
-    $('#dropdown-company a').first().trigger('click')
 }
 
 function destroyChart()

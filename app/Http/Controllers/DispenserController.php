@@ -48,30 +48,33 @@ class DispenserController extends Controller
 			'#007bff', '#6610f2', '#e83e8c', '#fd7e14', '#ffc107', '#17a2b8', '#343a40'
 		];
 
+		$colorListHover = [
+			'#94c8ff', '#ae88eb', '#e6a5c3', '#f7c79e', '#fadf8e', '#b4dae0', '#343a40'
+		];
+
 		foreach ($dispensers as $key => $dispenser) {
 			$dispenserHistoric = [];
 
 			foreach ($dispenser->dispenserHistoric as $historic) {
-				$historic->created_at = !empty($historic->created_at)
-					? Carbon::parse($historic->created_at)->subHour(3)->format('H:i d/M/Y')
-					: null;
+				$created_at = Carbon::parse($historic->created_at)->subHour(3)->format("H:00 d/m/Y");
 
 				$historicList[] = $historic;
 
 				if ($historic->type === 3)
 					continue;
 
-				$labels[] = $historic->created_at;
-				$dispenserHistoric[count($labels)] = $historic->uses;
+				$labels["{$historic->created_at}"] = $created_at;
+				$dispenserHistoric[$created_at] = $historic->uses;
 			}
 
 			$color = $colorList[$key];
+			$colorHover = $colorListHover[$key];
 
 			$dataSet = new stdClass();
 			$dataSet->data = $dispenserHistoric;
 			$dataSet->label = 'Dispenser #' . $dispenser->id;
 			$dataSet->lineTension = 0;
-			$dataSet->backgroundColor = $color . '4D';
+			$dataSet->backgroundColor = $colorHover;
 			$dataSet->borderColor = $color;
 			$dataSet->borderWidth = 4;
 			$dataSet->pointBackgroundColor = $color;
@@ -79,24 +82,26 @@ class DispenserController extends Controller
 			$dataSets[] = $dataSet;
 		}
 
-		$tempDataSet = array_fill(0, count($labels), 0);
+		$labels = array_unique($labels);
+
+		ksort($labels);
+
+		$labels = array_values($labels);
 
 		foreach ($dataSets as &$dataSet) {
-			array_map(
-				function ($key) use ($dataSet) {
-					if (!array_key_exists($key, $dataSet->data))
-						$dataSet->data[$key] = 0;
-				},
-				array_keys($tempDataSet)
-			);
+			$sortedDataSet = array_fill(0, count($labels), 0);
 
-			ksort($dataSet->data);
-			$dataSet->data = array_values($dataSet->data);
+			foreach ($dataSet->data as $key => $data) {
+				if (in_array($key, $labels)) {
+					$sortedDataSet[array_search($key, $labels)] = $data;
+				}
+			}
+
+			$dataSet->data = $sortedDataSet;
 		}
 
-
 		$series = [
-			'labels' => array_unique($labels),
+			'labels' => $labels,
 			'datasets' => $dataSets
 		];
 

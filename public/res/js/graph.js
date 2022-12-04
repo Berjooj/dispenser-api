@@ -15,9 +15,6 @@ function chartInit()
         reloadGraph(companyId, 'bar')
     })
 
-    if (companyId)
-        reloadGraph(companyId, 'bar')
-
     // desabilita os eventos dos links <a>
     $(document).on('click', '*[href]', function (e)
     {
@@ -48,6 +45,8 @@ function chartInit()
     })
 
     feather.replace()
+
+    $('#dropdown-company a').first().trigger('click')
 }
 
 function destroyChart()

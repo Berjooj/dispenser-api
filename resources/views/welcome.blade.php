@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="connect-src * 'unsafe-inline'; font-src 'self' data:;">
 
-    <title>Dispenser v0.3.1</title>
+    <title>Dispenser v0.3.2</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
@@ -27,7 +27,7 @@
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">
 
-    <link rel="icon" href="{{ asset('/res/bottle-water.svg') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('/res/icon.png') }}" type="image/x-icon">
 
     <style>
         body {
@@ -90,6 +90,49 @@
 
     <script>
         $(document).ready(function() {
+            moment.defineLocale('pt-br', {
+                months: 'Janeiro_Fevereiro_Março_Abril_Maio_Junho_Julho_Agosto_Setembro_Outubro_Novembro_Dezembro'.split('_'),
+                monthsShort: 'jan_fev_mar_abr_mai_jun_jul_ago_set_out_nov_dez'.split('_'),
+                weekdays: 'Domingo_Segunda-Feira_Terça-Feira_Quarta-Feira_Quinta-Feira_Sexta-Feira_Sábado'.split('_'),
+                weekdaysShort: 'dom_seg_ter_qua_qui_sex_sáb'.split('_'),
+                weekdaysMin: 'dom_2ª_3ª_4ª_5ª_6ª_sáb'.split('_'),
+                longDateFormat: {
+                    LT: 'HH:mm',
+                    L: 'DD/MM/YYYY',
+                    LL: 'D [de] MMMM [de] YYYY',
+                    LLL: 'D [de] MMMM [de] YYYY [às] LT',
+                    LLLL: 'dddd, D [de] MMMM [de] YYYY [às] LT'
+                },
+                calendar: {
+                    sameDay: '[Hoje às] LT',
+                    nextDay: '[Amanhã às] LT',
+                    nextWeek: 'dddd [às] LT',
+                    lastDay: '[Ontem às] LT',
+                    lastWeek: function() {
+                        return (this.day() === 0 || this.day() === 6) ?
+                            '[Último] dddd [às] LT' : // Saturday + Sunday
+                            '[Última] dddd [às] LT'; // Monday - Friday
+                    },
+                    sameElse: 'L'
+                },
+                relativeTime: {
+                    future: 'em %s',
+                    past: '%s atrás',
+                    s: 'segundos',
+                    m: 'um minuto',
+                    mm: '%d minutos',
+                    h: 'uma hora',
+                    hh: '%d horas',
+                    d: 'um dia',
+                    dd: '%d dias',
+                    M: 'um mês',
+                    MM: '%d meses',
+                    y: 'um ano',
+                    yy: '%d anos'
+                },
+                ordinal: '%dº'
+            });
+
             $.get('api/companies', function(data) {
                 $('#loader').addClass('hide-loader');
 
@@ -128,6 +171,11 @@
                     chartInit()
                 });
 
+                // $.get("{{ asset('res/components/dispenser.html') }}", function(data) {
+                //     $('#main').html(data)
+                //     dispenserInit()
+                // });
+
                 $('.nav-link').on('click', function() {
                     $('.nav-link').removeClass('active')
                     $(this).addClass('active')
@@ -135,12 +183,13 @@
                     $('#main').empty()
 
                     destroyChart()
+                    destroyDispenser()
 
                     switch ($(this).attr('id')) {
                         case 'dispenser':
                             $.get("{{ asset('res/components/dispenser.html') }}", function(data) {
                                 $('#main').html(data)
-                                chartInit()
+                                dispenserInit()
                             });
                             break;
                         case 'map':
@@ -159,6 +208,7 @@
             })
         })
     </script>
+
 </body>
 
 </html>

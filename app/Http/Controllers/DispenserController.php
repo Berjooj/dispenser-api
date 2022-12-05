@@ -7,6 +7,7 @@ use App\Models\DispenserHistoric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Builder;
 use stdClass;
 
 class DispenserController extends Controller
@@ -19,13 +20,22 @@ class DispenserController extends Controller
 	 */
 	public function show($companyId)
 	{
-		$historicList = DispenserHistoric::join('dispensers', 'dispensers.id', '=', 'dispenser_historics.dispenser_id')
-			->where('dispenser.company_id', $companyId)
+		$dispenserList = Dispenser::where('company_id', $companyId)
+			->withCount([
+				'dispenserHistoric as uses' => function (Builder $query) {
+					$query->where('type', '=', 1);
+				},
+				'dispenserHistoric as entries' => function (Builder $query) {
+					$query->where('type', '=', 3);
+				},
+				'dispenserHistoric as recharges' => function (Builder $query) {
+					$query->where('type', '=', 2);
+				},
+			])
 			->orderBy('created_at', 'asc')
-			->get('dispenser_hitorics.*');
+			->get();
 
-		foreach ($historicList as $historic) {
-		}
+		return response()->json(['dispensers' => $dispenserList]);
 	}
 
 	/**

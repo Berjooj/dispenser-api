@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="connect-src * 'unsafe-inline'; font-src 'self' data:;">
-
-    <title>Dispenser v0.3.2</title>
+    <meta http-equiv="Content-Security-Policy" content="connect-src * blob:; font-src * data:;img-src * data:;">
+    <title>Dispenser v0.3.3</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
@@ -24,6 +23,12 @@
     <script src="{{ asset('res/js/map.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/dispenser.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">
 
@@ -171,9 +176,9 @@
                     chartInit()
                 });
 
-                // $.get("{{ asset('res/components/dispenser.html') }}", function(data) {
+                // $.get("{{ asset('res/components/map.html') }}", function(data) {
                 //     $('#main').html(data)
-                //     dispenserInit()
+                //     mapInit()
                 // });
 
                 $('.nav-link').on('click', function() {
@@ -184,6 +189,7 @@
 
                     destroyChart()
                     destroyDispenser()
+                    destroyMap()
 
                     switch ($(this).attr('id')) {
                         case 'dispenser':
@@ -193,6 +199,10 @@
                             });
                             break;
                         case 'map':
+                            $.get("{{ asset('res/components/map.html') }}", function(data) {
+                                $('#main').html(data)
+                                mapInit()
+                            });
                             break;
                         case 'chart':
                             $.get("{{ asset('res/components/chart.html') }}", function(data) {

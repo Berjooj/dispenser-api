@@ -57,11 +57,15 @@ function reloadDispenser(companyId)
 
                 data.dispensers.forEach(element =>
                 {
+                    let color = element.current_capacity >= 15 ? '#007bff' : '#c92e2e';
+
                     dispenserListHTML += '<div class="card text-center col-5 mb-3 ml-3"'
                     dispenserListHTML += '<div class="card-body">'
-                    dispenserListHTML += '<i class="fa-solid fa-bottle-water" style="font-size: 150px;color: #007bff;margin-top: 15px"></i>'
+                    dispenserListHTML += '<i class="fa-solid fa-bottle-water" style="font-size: 150px;color: ' + color + ';margin-top: 15px"></i>'
                     dispenserListHTML += '<br><br>'
-                    dispenserListHTML += '<p class="card-text"><b>ID:</b> #' + element.id + '</p>'
+                    dispenserListHTML += element.current_capacity >= 15
+                        ? '<p class="card-text"><b>ID:</b> #' + element.id + '</p>'
+                        : '<p class="card-text" style="color: ' + color + '"><b>(Reabastecimento necessário) ID:</b> #' + element.id + '</p>'
                     dispenserListHTML += '<p class="card-text"><b>Código:</b> #' + element.token + '</p>'
                     dispenserListHTML += '<button type="button" class="btn btn-link" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'>Mais informações</button>'
                     dispenserListHTML += '</div></div>'

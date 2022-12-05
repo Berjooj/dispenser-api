@@ -31,7 +31,7 @@ function openDispenserModal(element)
     bodyHTML += '<b>Latitude: </b>' + element.lat + '<br>'
     bodyHTML += '<b>Total utilizações: </b>' + element.uses + '<br>'
     bodyHTML += '<b>Total entradas: </b>' + element.entries + '<br>'
-    bodyHTML += '<b>Total recargas: </b>' + element.recharges + '<br>'
+    bodyHTML += '<b>Total reabastecimentos: </b>' + element.recharges + '<br>'
     bodyHTML += '<b>Atualizado em: </b>' + moment(element.updated_at).format('LLLL') + '<br>'
     bodyHTML += '<b>Registrado em: </b>' + moment(element.created_at).format('LLLL') + '<br>'
     bodyHTML += '<b>Complemento: </b>' + element.complement + '<br>'

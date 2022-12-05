@@ -46,6 +46,11 @@ function chartInit()
 
     feather.replace()
 
+    $('#reloadDashboard').on('click', function ()
+    {
+        reloadGraph($('#companyLabel').data('company-id'), 'bar')
+    })
+
     $('#dropdown-company a').first().trigger('click')
 }
 
@@ -53,6 +58,7 @@ function destroyChart()
 {
     $('#dropdown-company a').off()
     $('#dropdown-chart-type a').off()
+    $('#reloadDashboard').off()
 }
 
 
@@ -115,14 +121,14 @@ function reloadGraph(companyId, displayType)
 
                 let eventTypeList = [
                     'Utilização',
-                    'Substituição',
+                    'Reabastecimento',
                     'Entrada'
                 ]
 
                 let eventIcon = [
                     '<i class="fa-solid fa-hands-bubbles text-white bg-secondary timeline-icon"></i>',
-                    '<i class="fa-solid fa-person-walking text-white bg-success timeline-icon" style="padding-left: 8px;"></i>',
-                    '<i class="fa-solid fa-fill text-white bg-info timeline-icon"></i>'
+                    '<i class="fa-solid fa-fill text-white bg-info timeline-icon""></i>',
+                    '<i class="fa-solid fa-person-walking text-white bg-success timeline-icon" style="padding-left: 8px;"></i>'
                 ]
 
                 let eventMessage = [

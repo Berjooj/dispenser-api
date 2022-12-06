@@ -6,12 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="connect-src * blob:; font-src * data:;img-src * data:;">
-    <title>Dispenser v0.3.4</title>
+    <title>Dispenser v0.4</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dispenser.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/app.css') }}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('res/css/map.css') }}" crossorigin="anonymous">
 
     <script src="{{ asset('res/js/popper.min.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/jquery-3.6.1.js') }}" crossorigin="anonymous"></script>
@@ -24,11 +25,8 @@
     <script src="{{ asset('res/js/dispenser.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.25/"></script>
 
     <link href="{{ asset('res/src/fontawesome-free-6.2.0-web/css/all.min.css') }}" rel="stylesheet">
 
@@ -45,13 +43,18 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <div class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
             <div class="btn-group">
-                <button class="btn btn-secondary btn-sm dropdown-toggle select-brand" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
+                <button disabled class="btn btn-secondary btn-sm select-brand" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="companyLabel">
                     <span>Selecionar</span>
                 </button>
                 <div class="dropdown-menu" id="dropdown-company">
                 </div>
             </div>
         </div>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" onclick="window.location.href = '/login'">Sair</a>
+            </li>
+        </ul>
     </nav>
 
     <div class="container-fluid">
@@ -74,7 +77,7 @@
                         <li class="nav-item">
                             <button class="nav-link" data-page="dispenser" id="dispenser">
                                 <i class="fa-solid fa-bottle-water feather feather-layers" style="text-align:center"></i>
-                                Dispenser
+                                Gerenciamento
                             </button>
                         </li>
                     </ul>
@@ -93,6 +96,9 @@
     <br><br><br>
     <br><br><br>
 
+    <?php
+    echo "<script> var basePath = '" . asset('/res/') . "'</script>";
+    ?>
     <script>
         $(document).ready(function() {
             moment.defineLocale('pt-br', {

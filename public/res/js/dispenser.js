@@ -24,18 +24,29 @@ function openDispenserModal(element)
 
     $('#dispenserListHeaderModal').html('<b>ID: </b>#' + element.id)
 
-    let bodyHTML = '';
+    let bodyHTML = '<form>';
 
-    bodyHTML += '<b>Capacidade: </b>' + element.current_capacity + '%<br>'
-    bodyHTML += '<b>Longitude: </b>' + element.lng + '<br>'
-    bodyHTML += '<b>Latitude: </b>' + element.lat + '<br>'
-    bodyHTML += '<b>Total utilizações: </b>' + element.uses + '<br>'
-    bodyHTML += '<b>Total entradas: </b>' + element.entries + '<br>'
-    bodyHTML += '<b>Total reabastecimentos: </b>' + element.recharges + '<br>'
-    bodyHTML += '<b>Atualizado em: </b>' + moment(element.updated_at).format('LLLL') + '<br>'
-    bodyHTML += '<b>Registrado em: </b>' + moment(element.created_at).format('LLLL') + '<br>'
-    bodyHTML += '<b>Complemento: </b>' + element.complement + '<br>'
-    bodyHTML += '<b>Endereço: </b>' + element.address + '</p>'
+    bodyHTML += '<div class="form-group"><label for="">Capacidade:</label><input value="'
+        + element.current_capacity
+        + '" type="text" class="form-control" id="" placeholder=""></div>'
+
+    bodyHTML += '<div class="form-group"><label for="">Longitude:</label><input value="'
+        + element.lng
+        + '" type="text" class="form-control" id="" placeholder=""></div>'
+
+    bodyHTML += '<div class="form-group"><label for="">Latitude:</label><input value="'
+        + element.lat
+        + '" type="text" class="form-control" id="" placeholder=""></div>'
+
+    bodyHTML += '<div class="form-group"><label for="">Endereço:</label><input value="'
+        + element.address
+        + '" type="text" class="form-control" id="" placeholder=""></div>'
+
+    bodyHTML += '<div class="form-group"><label for="">Complemento:</label><input value="'
+        + element.complement
+        + '" type="text" class="form-control" id="" placeholder=""></div>'
+
+    bodyHTML += '</form>'
 
     $('#dispenserListBodyModal').html(bodyHTML)
 }
@@ -67,8 +78,9 @@ function reloadDispenser(companyId)
                         ? '<p class="card-text"><b>ID:</b> #' + element.id + '</p>'
                         : '<p class="card-text" style="color: ' + color + '"><b>(Reabastecimento necessário) ID:</b> #' + element.id + '</p>'
                     dispenserListHTML += '<p class="card-text"><b>Código:</b> #' + element.token + '</p>'
-                    dispenserListHTML += '<button type="button" class="btn btn-link" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'>Mais informações</button>'
-                    dispenserListHTML += '</div></div>'
+                    dispenserListHTML += '<div><button type="button" class="btn btn-primary" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'><i class="fa-solid fa-pencil"></i> Editar</button>'
+                    dispenserListHTML += '<button disabled type="button" class="btn btn-danger" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'><i class="fa-solid fa-trash"></i> Remover</button></div>'
+                    dispenserListHTML += '<br></div></div>'
                 })
 
                 $('#dispenserListCard').empty()

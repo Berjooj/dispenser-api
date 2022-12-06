@@ -63,3 +63,13 @@
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
 }
+
+#companyLabel {
+    background-color: rgb(0 0 0 / 0%);
+    color: white;
+    opacity: .85;
+}
+
+#companyLabel span::after {
+    content: "" !important;
+}

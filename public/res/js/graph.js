@@ -151,7 +151,6 @@ function reloadGraph(companyId, displayType)
                     updateListHTML += '<p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">'
                     updateListHTML += '<strong class="d-block text-gray-dark">' + eventType + '<span class="update-date"> - ' + eventDate + '</span></strong>'
                     updateListHTML += eventMessage[element.type - 1] + element.dispenser_id + '</p></div>'
-
                 })
 
                 $('#update-list').html(updateListHTML)

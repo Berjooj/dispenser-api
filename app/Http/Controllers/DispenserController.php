@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class DispenserController extends Controller
@@ -23,10 +24,10 @@ class DispenserController extends Controller
 		$dispenserList = Dispenser::where('company_id', $companyId)
 			->withCount([
 				'dispenserHistoric as uses' => function (Builder $query) {
-					$query->where('type', '=', 1);
+					$query->select(DB::raw("COALESCE(SUM(uses), 0) as uses"))->where('type', '=', 1);
 				},
 				'dispenserHistoric as entries' => function (Builder $query) {
-					$query->where('type', '=', 3);
+					$query->select(DB::raw("COALESCE(SUM(entries), 0) as uses"))->where('type', '=', 3);
 				},
 				'dispenserHistoric as recharges' => function (Builder $query) {
 					$query->where('type', '=', 2);
@@ -121,15 +122,15 @@ class DispenserController extends Controller
 
 		$counter = [
 			'dispensers' => count($dispensers),
-			'usage' => count(array_filter($historicList, function ($historic) {
+			'usage' => array_sum(array_column((array) array_filter($historicList, function ($historic) {
 				return $historic->type === 1;
-			})),
+			}), 'uses')),
 			'recharges' => count(array_filter($historicList, function ($historic) {
 				return $historic->type === 2;
 			})),
-			'entries' => count(array_filter($historicList, function ($historic) {
+			'entries' => array_sum(array_column((array) array_filter($historicList, function ($historic) {
 				return $historic->type === 3;
-			}))
+			}), 'entries'))
 		];
 
 		return response()->json(['table' => $historicList, 'series' => $series, 'counter' => $counter]);

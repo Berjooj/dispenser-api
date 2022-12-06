@@ -77,7 +77,8 @@ function reloadDispenser(companyId)
                     dispenserListHTML += element.current_capacity >= 15
                         ? '<p class="card-text"><b>ID:</b> #' + element.id + '</p>'
                         : '<p class="card-text" style="color: ' + color + '"><b>(Reabastecimento necessário) ID:</b> #' + element.id + '</p>'
-                    dispenserListHTML += '<p class="card-text"><b>Código:</b> #' + element.token + '</p>'
+                    dispenserListHTML += '<p class="card-text"><b>Código:</b> #' + element.token + '<br>'
+                    dispenserListHTML += '<b>Total de usos:</b> ' + element.uses + '</p>'
                     dispenserListHTML += '<div><button type="button" class="btn btn-primary" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'><i class="fa-solid fa-pencil"></i> Editar</button>'
                     dispenserListHTML += '<button disabled type="button" class="btn btn-danger" onclick=\'openDispenserModal(' + JSON.stringify(element) + ')\'><i class="fa-solid fa-trash"></i> Remover</button></div>'
                     dispenserListHTML += '<br></div></div>'

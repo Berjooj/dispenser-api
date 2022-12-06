@@ -71,11 +71,15 @@ class DispenserController extends Controller
 
 				$historicList[] = $historic;
 
-				if ($historic->type === 3)
+				if ($historic->type === 3 || $historic->type === 2)
 					continue;
 
 				$labels["{$historic->created_at}"] = $created_at;
-				$dispenserHistoric[$created_at] = $historic->uses;
+
+				if (empty($dispenserHistoric[$created_at]))
+					$dispenserHistoric[$created_at] = 0;
+
+				$dispenserHistoric[$created_at] += $historic->uses;
 			}
 
 			$color = $colorList[$key];
@@ -104,7 +108,7 @@ class DispenserController extends Controller
 
 			foreach ($dataSet->data as $key => $data) {
 				if (in_array($key, $labels)) {
-					$sortedDataSet[array_search($key, $labels)] = $data;
+					$sortedDataSet[array_search($key, $labels)] += $data;
 				}
 			}
 

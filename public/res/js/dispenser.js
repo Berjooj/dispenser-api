@@ -27,7 +27,7 @@ function openDispenserModal(element)
     let bodyHTML = '<form>';
 
     bodyHTML += '<div class="form-group"><label for="">Capacidade:</label><input value="'
-        + element.current_capacity
+        + element.capacity
         + '" type="text" class="form-control" id="" placeholder=""></div>'
 
     bodyHTML += '<div class="form-group"><label for="">Longitude:</label><input value="'

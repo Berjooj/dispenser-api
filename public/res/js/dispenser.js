@@ -69,7 +69,7 @@ function reloadDispenser(companyId)
                 data.dispensers.forEach(element =>
                 {
 
-                    let useAmount = element.entries !== 0 ? (element.uses / element.entries).toFixed(2) : 0;
+                    let useAmount = element.entries != 0 ? (element.uses / element.entries).toFixed(2) : 0;
                     let percentage = ((element.current_capacity * 100) / element.capacity).toFixed(0);
                     let color = percentage >= 15 ? 'w3-blue' : 'w3-red';
                     let textColor = percentage >= 15 ? 'w3-text-blue' : 'w3-text-red';

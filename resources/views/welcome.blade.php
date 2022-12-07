@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="connect-src * blob:; font-src * data:;img-src * data:;">
-    <title>Dispenser v0.4.4</title>
+    <title>Dispenser v0.4.5</title>
 
     <link rel="stylesheet" href="{{ asset('res/css/bootstrap.min.css') }}" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('res/css/dashboard.css') }}" crossorigin="anonymous">
@@ -24,6 +24,8 @@
     <script src="{{ asset('res/js/map.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/dispenser.js') }}" crossorigin="anonymous"></script>
     <script src="{{ asset('res/js/moment.js') }}" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
     <script src="https://js.arcgis.com/4.25/"></script>

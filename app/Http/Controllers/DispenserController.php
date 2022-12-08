@@ -63,16 +63,36 @@ class DispenserController extends Controller
 			'#94c8ff', '#ae88eb', '#e6a5c3', '#f7c79e', '#fadf8e', '#b4dae0', '#343a40'
 		];
 
+		$dataSetEntryList = [];
+
+		$dataSetEntries = new stdClass();
+		$dataSetEntries->data = $dataSetEntryList;
+		$dataSetEntries->label = 'Utilizações';
+		$dataSetEntries->lineTension = 0;
+		$dataSetEntries->backgroundColor = 'rgba(255,255,255,0)';
+		$dataSetEntries->borderColor = '#28a745';
+		$dataSetEntries->borderWidth = 4;
+		$dataSetEntries->type = 'line';
+
 		foreach ($dispensers as $key => $dispenser) {
-			$dispenserHistoric = [];
 
 			foreach ($dispenser->dispenserHistoric as $historic) {
 				$created_at = Carbon::parse($historic->created_at)->subHour(3)->format("H:00 d/m/Y");
 
 				$historicList[] = $historic;
 
-				if ($historic->type === 3 || $historic->type === 2)
+				if ($historic->type === 2)
 					continue;
+
+				if ($historic->type === 3) {
+					if (empty($dataSetEntryList[$created_at]))
+						$dataSetEntryList[$created_at] = 0;
+
+					$dataSetEntryList[$created_at] += $historic->entries;
+					$labels["{$historic->created_at}"] = $created_at;
+
+					continue;
+				}
 
 				$labels["{$historic->created_at}"] = $created_at;
 
@@ -96,6 +116,10 @@ class DispenserController extends Controller
 
 			$dataSets[] = $dataSet;
 		}
+
+		$dataSetEntries->data = $dataSetEntryList;
+
+		array_unshift($dataSets, $dataSetEntries);
 
 		$labels = array_unique($labels);
 

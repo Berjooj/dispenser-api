@@ -67,7 +67,7 @@ class DispenserController extends Controller
 
 		$dataSetEntries = new stdClass();
 		$dataSetEntries->data = $dataSetEntryList;
-		$dataSetEntries->label = 'Utilizações';
+		$dataSetEntries->label = 'Entradas';
 		$dataSetEntries->lineTension = 0;
 		$dataSetEntries->backgroundColor = 'rgba(255,255,255,0)';
 		$dataSetEntries->borderColor = '#28a745';

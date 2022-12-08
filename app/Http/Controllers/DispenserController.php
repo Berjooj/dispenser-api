@@ -75,6 +75,7 @@ class DispenserController extends Controller
 		$dataSetEntries->type = 'line';
 
 		foreach ($dispensers as $key => $dispenser) {
+			$dispenserHistoric = [];
 
 			foreach ($dispenser->dispenserHistoric as $historic) {
 				$created_at = Carbon::parse($historic->created_at)->subHour(3)->format("H:00 d/m/Y");
